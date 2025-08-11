@@ -1,0 +1,414 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Preorder - Reagan & Zachary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1A2A44; /* Darker navy for better contrast */
+            color: #F5F5F5; /* Light gray for readability */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(26, 42, 68, 0.9); /* Darker semi-transparent container */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #FFD700; /* Gold for elegance */
+        }
+        .info {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #2E4057;
+            border-radius: 10px;
+        }
+        .step.active { background: #FFD700; color: #1A2A44; }
+        .section {
+            margin-bottom: 30px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            background: rgba(46, 64, 87, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .item:hover {
+            transform: scale(1.05);
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: #F5F5F5;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: background 0.3s;
+        }
+        button.selected {
+            background: #FFD700;
+            color: #1A2A44;
+        }
+        .drinks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .drink-item {
+            display: flex;
+            align-items: center;
+            background: rgba(46, 64, 87, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .drink-item:hover {
+            transform: scale(1.05);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 5px;
+            background: #2E4057;
+            color: #F5F5F5;
+        }
+        #submitBtn {
+            width: 100%;
+            padding: 15px;
+            background: #FFD700;
+            color: #1A2A44;
+            font-weight: bold;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        #modal-content {
+            background: #1A2A44;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+        }
+        .note {
+            text-align: center;
+            color: #FFD700;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        footer {
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Preorder for The Wedding of Reagan Gay & Zachary Ogert 🍋💍</h1>
+        <div class="info">Includes chips and a brownie</div>
+        <div class="stepper">
+            <div class="step active">1. Name</div>
+            <div class="step">2. Food</div>
+            <div class="step">3. Drink</div>
+            <div class="step">4. Submit</div>
+        </div>
+        <form id="orderForm" onsubmit="submitOrder(event)">
+            <label>Name: <input type="text" id="guestName" required placeholder="Enter your name"></label>
+
+
+            <div class="section">
+                <h2>Food (Select One)</h2>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">The Cuban</button> (Ham, salami, mayo mustard & Swiss with pickles, pressed)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">Signature Sub</button> (Meats: Ham, Turkey, Salami, Pepperoni; Cheeses: Swiss, Cheddar, Provolone, Yellow American, Pepperjack; Veggies: Lettuce, Onion, Tomato, Pickle, Jalapeno; Sauces: Mayo, Mustard, Italian Dressing, Salt, Pepper - We kindly request you specify your choices in the Special Instructions field below)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">Chicken Salad Croissant</button> (White meat chicken salad loaded on a buttery croissant with lettuce, tomato and onion)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">Italian Pesto Panini</button> (Ham, salami, pepperoni, provolone & basil pesto pressed to perfection)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">The Cheeseburger</button> (100% Angus Beef burger with Veggies: lettuce, tomato, onion, pickle; Sauces: ketchup, mustard, mayo; Cheeses: pepper jack, provolone, Swiss, cheddar, yellow American - We kindly request you specify your choices in the Special Instructions field below)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">The Meatball Panini</button> (Meatballs stewed in hearty marinara, topped with provolone and parmesan. Pressed Toasty)</div>
+                <div class="item"><button type="button" data-type="food" onclick="selectSingle(this, 'food')">Italian Sub</button> (Ham, salami, pepperoni, provolone cheese, lettuce, tomato, onion and Italian dressing)</div>
+                <label>Special Instructions for Food: <input type="text" id="foodInstructions" placeholder="e.g., No onions" required></label>
+            </div>
+
+
+            <div class="section">
+                <h2>Drinks (Select One)</h2>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Tropical Cooler</button> (The tropical flavors of mango and coconut infused in our classic lemonade)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Lavender Lemonade</button> (Fresh squeezed lemonade infused with aromatic French lavender)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Cherry Limeade</button> (Refreshing limeade blended with cherry juice, served over ice and topped with maraschino cherries)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Limonada Colada</button> (Our classic lemonade infused with flavors of coconut and pineapple. Refreshment on island time)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Brazilian Lemonade</button> (A frothy limeade, this creamy drink is like Key Lime pie in a glass)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Galaxy Lemonade</button> (A dark blend of lemonade, red raspberry, blue raspberry, French vanilla and shimmer)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Pineapple Tajin Lemonade</button> (A twist on a Mexican classic with delicious pineapple lemonade topped with tajin)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Pineapple Upside Down Lemonade</button> (A retro-refreshment, lemonade infused with cherry and pineapple)</div>
+                <div class="item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Sharkbite Lemonade</button> (Blue raspberry lemonade served with a cherry blood pipette and a candy shark)</div>
+                <div class="drinks-grid">
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Strawberry Lemonade</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Raspberry Lemonade</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Raspberry Iced Tea</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Blackberry Lemonade</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Peach Iced Tea</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Peachy Palmer</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Watermelon Iced Tea</button></div>
+                    <div class="drink-item"><button type="button" data-type="drink" onclick="selectSingle(this, 'drink')">Watermelon Lemonade</button></div>
+                </div>
+                <div class="item">Create Your Own: <input type="text" id="customDrink" placeholder="e.g., Sweet Tea with Mango and Peach" oninput="handleCustomDrink()"></div>
+                <label>Special Instructions for Drinks: <input type="text" id="drinkInstructions" placeholder="e.g., Extra ice"></label>
+            </div>
+
+
+            <button type="submit" id="submitBtn">Submit Order</button>
+        </form>
+        <div class="note">After submitting, your email client will open. Please send the email to complete your order.</div>
+    </div>
+
+
+    <div id="modal">
+        <div id="modal-content">
+            <h2>Order Summary</h2>
+            <p id="summary"></p>
+            <button onclick="submitOrder(true)">Confirm</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+
+    <footer>GroveSqueeze Events 🍋</footer>
+
+
+    <script>
+        let currentStep = 1;
+        let selectedFood = '';
+        let selectedDrink = '';
+        let isCustomDrink = false;
+
+
+        function updateStepper(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s, index) => {
+                s.classList.toggle('active', index < step);
+            });
+            currentStep = step;
+        }
+
+
+        function selectSingle(button, type) {
+            const buttons = document.querySelectorAll(`button[data-type="${type}"]`);
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+            if (type === 'food') {
+                selectedFood = button.textContent;
+                updateStepper(2); // Move to Drink step
+            } else {
+                selectedDrink = button.textContent;
+                document.getElementById('customDrink').value = ''; // Clear custom if predefined selected
+                isCustomDrink = false;
+                updateStepper(3); // Move to Submit step
+            }
+            updateSummary();
+        }
+
+
+        function handleCustomDrink() {
+            if (document.getElementById('customDrink').value.trim() !== '') {
+                const drinkButtons = document.querySelectorAll('button[data-type="drink"]');
+                drinkButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedDrink = '';
+                isCustomDrink = true;
+                updateStepper(3); // Move to Submit step
+            } else {
+                isCustomDrink = false;
+            }
+            updateSummary();
+        }
+
+
+        function updateSummary() {
+            const summary = document.getElementById('summary');
+            const drinkSelection = isCustomDrink ? document.getElementById('customDrink').value : selectedDrink;
+            summary.innerHTML = `Selected Food: ${selectedFood || 'None'}<br>
+                                Selected Drink: ${drinkSelection || 'None'}<br>
+                                Food Instructions: ${document.getElementById('foodInstructions').value}<br>
+                                Drink Instructions: ${document.getElementById('drinkInstructions').value}<br>
+                                Guest Name: ${document.getElementById('guestName').value}`;
+        }
+
+
+        function showModal() {
+            document.getElementById('modal').style.display = 'flex';
+            updateSummary();
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+
+        function generateOrderImage(callback) {
+            const drinkSelection = isCustomDrink ? document.getElementById('customDrink').value : selectedDrink;
+            const orderText = [
+                `Guest Name: ${document.getElementById('guestName').value}`,
+                `Food: ${selectedFood}`,
+                `Drink: ${drinkSelection}`,
+                `Food Instructions: ${document.getElementById('foodInstructions').value}`,
+                `Drink Instructions: ${document.getElementById('drinkInstructions').value}`,
+                `Timestamp: ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`
+            ].join('\n');
+
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = 192; // 2 inches at 96 DPI
+            const lineHeight = 20;
+            const padding = 10;
+            const lines = orderText.split('\n');
+            const height = (lines.length * lineHeight) + (padding * 2);
+
+
+            canvas.width = width;
+            canvas.height = height;
+
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = 'black';
+            ctx.font = '12px Arial';
+            lines.forEach((line, index) => {
+                ctx.fillText(line, padding, padding + (index + 1) * lineHeight);
+            });
+
+
+            const dataUrl = canvas.toDataURL('image/png');
+            const blob = dataURLToBlob(dataUrl);
+            callback(dataUrl, blob);
+        }
+
+
+        function dataURLToBlob(dataURL) {
+            const [header, data] = dataURL.split(',');
+            const mime = header.match(/:(.*?);/)[1];
+            const bstr = atob(data);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        }
+
+
+        function submitOrder(event) {
+            if (event) event.preventDefault();
+            if (!selectedFood || (!selectedDrink && !isCustomDrink)) {
+                alert('Please select one food and one drink.');
+                return;
+            }
+            if ((selectedFood === 'Signature Sub' || selectedFood === 'The Cheeseburger') && document.getElementById('foodInstructions').value.trim() === '') {
+                alert('Please provide special instructions for ' + selectedFood + ' to specify your choices.');
+                return;
+            }
+            showModal();
+            updateStepper(4); // Move to Submit step
+
+
+            if (event === true) {
+                generateOrderImage((dataUrl, blob) => {
+                    const drinkSelection = isCustomDrink ? document.getElementById('customDrink').value : selectedDrink;
+                    const subject = encodeURIComponent('New Wedding Order from ' + document.getElementById('guestName').value);
+                    const htmlBody = encodeURIComponent(
+                        '<p>Order Summary (attached as image for printing):</p>' +
+                        '<img src="' + dataUrl + '" alt="Order Summary" style="width:2in;">' +
+                        '<p>Fallback Text:</p>' +
+                        '<pre>' +
+                        `Name: ${document.getElementById('guestName').value}\n` +
+                        `Food: ${selectedFood}\n` +
+                        `Drink: ${drinkSelection}\n` +
+                        `Food Instructions: ${document.getElementById('foodInstructions').value}\n` +
+                        `Drink Instructions: ${document.getElementById('drinkInstructions').value}\n` +
+                        `Timestamp: ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}` +
+                        '</pre>'
+                    );
+                    const mailtoLink = `mailto:GroveSqueeze@gmail.com?subject=${subject}&body=${htmlBody}`;
+                    window.location.href = mailtoLink;
+
+
+                    // Download the image for printing
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.download = 'order.png';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+
+
+                    alert('Order generated as an image and sent to your email client! Please send the email to complete your order. The image has also been downloaded for your records.');
+                    document.getElementById('orderForm').reset();
+                    resetSelections();
+                    updateStepper(1); // Reset to Name step
+                    closeModal();
+                });
+            }
+        }
+
+
+        function resetSelections() {
+            selectedFood = '';
+            selectedDrink = '';
+            isCustomDrink = false;
+            document.querySelectorAll('button.selected').forEach(btn => btn.classList.remove('selected'));
+        }
+
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', updateSummary);
+        });
+        updateStepper(1); // Start at Name step
+    </script>
+</body>
+</html>
